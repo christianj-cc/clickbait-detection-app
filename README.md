@@ -143,9 +143,8 @@ Current experimental results:
 ## Authors
 
 - Christian James Cahilig
-- [Member Name]
-- [Member Name]
-- [Member Name]
+- Karylle Mish Gellica
+- Bai Fatime Andong
 
 University of Mindanao
 Bachelor of Science in Computer Science
