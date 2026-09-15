@@ -1222,7 +1222,7 @@ with st.sidebar:
 if "processing" not in st.session_state:
     st.session_state.processing = False
 
-_, center, _ = st.columns([1, 3, 1])
+_, center, _ = st.columns([1, 6, 1])
 
 with center:
 
