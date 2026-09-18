@@ -81,10 +81,17 @@ html, body, .stApp {
     color: var(--text-primary);
 }
  
-.block-container {
-    padding-top: 0.25rem;
-    padding-bottom: 1.25rem;
+.block-container,
+[data-testid="stMainBlockContainer"] {
+    padding-top: 3.75rem !important;
+    padding-bottom: 1.25rem !important;
+    padding-left: 1.5rem !important;
+    padding-right: 1.5rem !important;
     max-width: 1400px;
+}
+ 
+[data-testid="stHeader"] {
+    background-color: var(--bg-primary) !important;
 }
  
 [data-testid="stSidebar"] {
@@ -1339,7 +1346,7 @@ with st.sidebar:
 if "processing" not in st.session_state:
     st.session_state.processing = False
  
-_, center, _ = st.columns([1, 6, 1])
+_, center, _ = st.columns([1, 22, 1])
  
 with center:
  
@@ -1511,3 +1518,4 @@ with center:
 md(
     '<div class="footer-text">XLM-RoBERTa + BiLSTM + Self-Attention &nbsp;·&nbsp; Clickbait Detection Prototype</div>'
 )
+ 
