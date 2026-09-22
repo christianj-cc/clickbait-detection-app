@@ -40,6 +40,15 @@ def md(*lines):
  
  
 # =============================================================================
+# THEME
+# =============================================================================
+if "theme" not in st.session_state:
+    st.session_state.theme = "dark"
+
+theme = st.session_state.theme
+theme_attr = "light" if theme == "light" else "dark"
+
+# =============================================================================
 # CUSTOM CSS
 # =============================================================================
  
@@ -73,12 +82,41 @@ st.markdown("""
  
     --warning: #FBBF24;
     --warning-dim: rgba(251, 191, 36, 0.08);
+    --terminal-bg: #060B14;
 }
+
+/* Light-mode overrides are scoped to the app's theme marker. */
+.stApp:has(.theme-marker.light) {
+    --bg-primary: #F8FAFC;
+    --bg-secondary: #FFFFFF;
+    --surface: #FFFFFF;
+    --surface-raised: #F1F5F9;
+    --border: rgba(15, 23, 42, 0.12);
+    --border-bright: rgba(15, 23, 42, 0.28);
+    --text-primary: #0F172A;
+    --text-secondary: #334155;
+    --text-muted: #64748B;
+    --accent: #0891B2;
+    --accent-dark: #0E7490;
+    --accent-dim: rgba(8, 145, 178, 0.10);
+    --success: #047857;
+    --success-dim: rgba(4, 120, 87, 0.10);
+    --error: #BE123C;
+    --error-dim: rgba(190, 18, 60, 0.10);
+    --warning: #B45309;
+    --warning-dim: rgba(180, 83, 9, 0.10);
+    --terminal-bg: #E2E8F0;
+}
+
  
 html, body, .stApp {
     background-color: var(--bg-primary) !important;
     font-family: 'DM Sans', sans-serif;
     color: var(--text-primary);
+}
+
+p {
+    font-weight: 700;
 }
  
 .block-container,
@@ -146,7 +184,7 @@ html, body, .stApp {
  
 .sidebar-section-label {
     font-family: 'Space Mono', monospace;
-    font-size: 0.6rem;
+    font-size: 0.72rem;
     font-weight: 700;
     color: var(--text-muted);
     letter-spacing: 0.2em;
@@ -175,7 +213,7 @@ html, body, .stApp {
  
 .status-text {
     font-family: 'Space Mono', monospace;
-    font-size: 0.65rem;
+    font-size: 0.78rem;
     color: var(--text-secondary);
 }
  
@@ -200,7 +238,7 @@ details.model-detail summary {
     align-items: center;
     justify-content: space-between;
     font-family: 'Space Mono', monospace;
-    font-size: 0.62rem;
+    font-size: 0.72rem;
     letter-spacing: 0.06em;
     text-transform: uppercase;
     color: var(--text-secondary);
@@ -245,7 +283,7 @@ details.model-detail .detail-body {
 }
  
 .arch-terminal {
-    background: #05070D;
+    background: var(--terminal-bg);
     border: 1px solid var(--border);
     border-radius: 8px;
     padding: 1.1rem 0.75rem;
@@ -253,7 +291,7 @@ details.model-detail .detail-body {
     font-family: 'Space Mono', monospace;
     font-size: 0.62rem;
     line-height: 1.75;
-    color: #E5E7EB;
+    color: var(--text-primary);
     text-align: center;
 }
  
@@ -278,8 +316,8 @@ details.model-detail .detail-body {
     border: 1px solid var(--border-bright);
     color: var(--accent);
     font-family: 'Space Mono', monospace;
-    font-size: 0.5rem;
-    padding: 0.2rem 0.5rem;
+    font-size: 0.62rem;
+    padding: 0.25rem 0.55rem;
     border-radius: 99px;
     letter-spacing: 0.02em;
     white-space: nowrap;
@@ -289,7 +327,7 @@ details.model-detail .detail-body {
     width: 100%;
     border-collapse: collapse;
     font-family: 'Space Mono', monospace;
-    font-size: 0.55rem;
+    font-size: 0.65rem;
     margin-top: 0.5rem;
 }
  
@@ -488,6 +526,20 @@ textarea {
     color: var(--text-muted) !important;
 }
  
+/* Keep the original dark input appearance in dark mode.
+   In light mode, explicitly make the actual text-area surface white. */
+.stApp:has(.theme-marker.light) [data-testid="stTextArea"] textarea,
+.stApp:has(.theme-marker.light) [data-testid="stTextArea"] div[data-baseweb="textarea"],
+.stApp:has(.theme-marker.light) [data-testid="stTextArea"] [data-baseweb="base-input"] {
+    background-color: #FFFFFF !important;
+    color: #0F172A !important;
+}
+
+.stApp:has(.theme-marker.light) [data-testid="stTextArea"] {
+    background-color: #FFFFFF !important;
+    border-radius: 8px !important;
+}
+
 [data-testid="stTextArea"] textarea:disabled {
     opacity: 0.55 !important;
 }
@@ -660,8 +712,8 @@ textarea {
  
 .conf-title {
     font-family: 'Space Mono', monospace;
-    font-size: 0.58rem;
-    letter-spacing: 0.15em;
+    font-size: 0.68rem;
+    letter-spacing: 0.13em;
     text-transform: uppercase;
     color: var(--text-muted);
 }
@@ -691,7 +743,7 @@ textarea {
     justify-content: space-between;
     margin-top: 5px;
     font-family: 'Space Mono', monospace;
-    font-size: 0.48rem;
+    font-size: 0.58rem;
     color: var(--text-muted);
 }
  
@@ -710,7 +762,7 @@ textarea {
  
 .stat-label {
     font-family: 'Space Mono', monospace;
-    font-size: 0.55rem;
+    font-size: 0.65rem;
     color: var(--text-muted);
     letter-spacing: 0.1em;
     text-transform: uppercase;
@@ -771,8 +823,8 @@ textarea {
 }
  
 .analyzed-text {
-    font-size: 0.9rem;
-    line-height: 1.5;
+    font-size: 1rem;
+    line-height: 1.6;
     color: var(--text-primary);
 }
  
@@ -795,6 +847,38 @@ hr {
     border-color: var(--border) !important;
 }
  
+
+.section-label.headline-section-title {
+    font-size: 0.9rem !important;
+    font-weight: 700;
+    color: var(--text-primary) !important;
+    letter-spacing: 0.14em;
+    margin-top: 0.5rem;
+    margin-bottom: 0.45rem;
+}
+.results-heading {
+    font-size: 1.05rem !important;
+    font-weight: 700;
+    color: var(--text-primary) !important;
+    letter-spacing: 0.14em;
+}
+.status-text {
+    font-size: 0.82rem !important;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    color: var(--text-primary) !important;
+}
+.sidebar-section-label {
+    font-size: 0.72rem !important;
+}
+.stToggle label, .stToggle p {
+    font-size: 0.9rem !important;
+    color: var(--text-primary) !important;
+}
+[data-testid="stTextArea"] textarea {
+    font-size: 1.05rem !important;
+}
+
 /* ---------------------------------------------------------------------- */
 /* RESPONSIVE                                                              */
 /* ---------------------------------------------------------------------- */
@@ -869,6 +953,7 @@ hr {
  
 </style>
 """, unsafe_allow_html=True)
+md(f'<div class="theme-marker {theme_attr}" aria-hidden="true"></div>')
  
  
 # =============================================================================
@@ -1259,22 +1344,34 @@ with st.sidebar:
         '</div>'
     )
  
-    md('<div class="sidebar-section-label">Detection System</div>')
+    md('<div class="sidebar-section-label">Appearance</div>')
+    light_mode = st.toggle(
+        "Light mode",
+        value=(theme == "light"),
+        key="light_mode_toggle",
+        help="Switch between light and dark appearance. Dark mode is the default."
+    )
+    desired_theme = "light" if light_mode else "dark"
+    if desired_theme != st.session_state.theme:
+        st.session_state.theme = desired_theme
+        st.rerun()
+
+    #  md('<div class="sidebar-section-label" style="margin-top:1.25rem;">Detection System</div>')
  
-    if models_loaded:
-        md(
-            '<div class="status-pill">',
-            '<div class="status-dot"></div>',
-            '<div class="status-text">SYSTEM READY</div>',
-            '</div>'
-        )
-    else:
-        md(
-            '<div class="status-pill">',
-            '<div class="status-dot" style="background:#F87171;box-shadow:0 0 7px #F87171;"></div>',
-            '<div class="status-text">MODEL ERROR</div>',
-            '</div>'
-        )
+    # if models_loaded:
+    #     md(
+    #         '<div class="status-pill">',
+    #         '<div class="status-dot"></div>',
+    #         '<div class="status-text">SYSTEM READY</div>',
+    #         '</div>'
+    #     )
+    # else:
+    #     md(
+    #         '<div class="status-pill">',
+    #         '<div class="status-dot" style="background:#F87171;box-shadow:0 0 7px #F87171;"></div>',
+    #         '<div class="status-text">MODEL ERROR</div>',
+    #         '</div>'
+    #     )
  
     md('<div class="sidebar-section-label" style="margin-top:1.25rem;">Model Architectures</div>')
  
@@ -1362,7 +1459,7 @@ with center:
  
     render_steps(current_step)
  
-    md('<div class="section-label">News Headline</div>')
+    md('<div class="section-label headline-section-title">NEWS HEADLINE</div>')
  
     headline = st.text_area(
         "",
@@ -1450,7 +1547,7 @@ with center:
     if st.session_state.get("results"):
         results = st.session_state.results
  
-        md('<div class="results-heading">Analysis Results</div>')
+        md('<div class="results-heading">ANALYSIS RESULTS</div>')
         # md(
         #     '<div class="analyzed-headline">',
         #     '<div class="analyzed-label">Analyzed Headline</div>',
@@ -1518,4 +1615,3 @@ with center:
 md(
     '<div class="footer-text">XLM-RoBERTa + BiLSTM + Self-Attention &nbsp;·&nbsp; Clickbait Detection Prototype</div>'
 )
- 
